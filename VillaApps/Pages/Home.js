@@ -1,29 +1,26 @@
 import React from 'react';
-import {StyleSheet, Text, Image, View, Button} from 'react-native';
+import {StyleSheet, Image, View, Button} from 'react-native';
 
 const Home = () => {
   return (
     <View style={styles.home_container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}></Image>
-      <Text>App</Text>
-      <Button
-        title="Create Event"
-        color="#5bd657"
-        style={styles.create_event}></Button>
-      <Button
-        title="Show Events"
-        color="#5bd657"
-        style={styles.show_events}></Button>
+      <View style={styles.create_event}>
+        <Button title="Create Event" color="#5bd657"></Button>
+      </View>
+      <View style={styles.show_events}>
+        <Button title="Show Events" color="#5bd657"></Button>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   create_event: {
-    marginTop: '40%',
+    marginTop: '20%',
   },
   show_events: {
-    marginTop: '40%',
+    marginTop: '20%',
   },
   logo: {
     marginTop: '20%',
