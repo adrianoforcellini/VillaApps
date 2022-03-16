@@ -1,36 +1,16 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  Image,
-  useColorScheme,
-  View,
-} from 'react-native';
+import Home from './Pages/Home';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+const Stack = createNativeStackNavigator();
 
-const App = () => {
-  // const isDarkMode = useColorScheme() === 'dark';
-
+function App() {
   return (
-    <View style={styles.home_container}>
-      <Image source={require('./Images/Logo.png')} style={styles.logo}></Image>
-      <Text>App</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({
-  logo: {},
-  home_container: {
-    backgroundColor: 'black',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
-export default App;
+}
