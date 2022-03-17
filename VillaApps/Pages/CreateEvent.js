@@ -8,7 +8,6 @@ const CreateEvent = () => {
   const [reminder, setReminder] = useState('');
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
-  const [mode, setMode] = useState('date');
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -21,21 +20,12 @@ const CreateEvent = () => {
       }
     };
     getStorage();
-  });
+  }, []);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
-  };
-
-  const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
   };
 
   const createEvent = async currencyDate => {
@@ -47,7 +37,9 @@ const CreateEvent = () => {
       text: reminder,
       date: date.toLocaleString(),
     };
+
     events.push(reminderObj);
+
     try {
       await AsyncStorage.setItem('@VillaAppsReminders', JSON.stringify(events));
     } catch (e) {
@@ -70,7 +62,7 @@ const CreateEvent = () => {
       <View style={styles.button_container}>
         <Button
           color="#5bd657"
-          onPress={showDatepicker}
+          onPress={() => setShow(true)}
           title="Escolha A Data Do Lembrete"
         />
       </View>
@@ -78,7 +70,7 @@ const CreateEvent = () => {
         <DateTimePicker
           testID="dateTimePicker"
           value={date}
-          mode={mode}
+          mode="date"
           is24Hour={true}
           onChange={onChange}
         />

@@ -15,7 +15,7 @@ const Home = ({navigation}) => {
       }
     };
     getStorage();
-  });
+  }, []);
 
   return (
     <View style={styles.home_container}>
