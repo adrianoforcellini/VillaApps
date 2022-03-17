@@ -1,7 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Image, View, Button} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({navigation}) => {
+  useEffect(() => {
+    const getStorage = async () => {
+      try {
+        listEvents = await AsyncStorage.getItem('@VillaAppsReminders');
+        if (!listEvents) {
+          await AsyncStorage.setItem('@VillaAppsReminders', '[]');
+        }
+      } catch (e) {
+        alert(e);
+      }
+    };
+    getStorage();
+  });
+
   return (
     <View style={styles.home_container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}></Image>
@@ -12,7 +27,10 @@ const Home = ({navigation}) => {
           onPress={() => navigation.navigate('CreateEvent')}></Button>
       </View>
       <View style={styles.show_events}>
-        <Button title=" Seus Lembretes " color="#5bd657"></Button>
+        <Button
+          title=" Seus Lembretes "
+          color="#5bd657"
+          onPress={() => navigation.navigate('ShowEvents')}></Button>
       </View>
     </View>
   );

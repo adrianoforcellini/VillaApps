@@ -1,12 +1,27 @@
-import React, {useState} from 'react';
-import {StyleSheet, TextInput, View, Text, Button} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, TextInput, View, Text, Button, Alert} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
 
 const CreateEvent = () => {
   const [reminder, setReminder] = useState('');
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const getStorage = async () => {
+      try {
+        listEvents = await AsyncStorage.getItem('@VillaAppsReminders');
+        setEvents(JSON.parse(listEvents));
+      } catch (e) {
+        alert(e);
+      }
+    };
+    getStorage();
+  });
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -21,6 +36,27 @@ const CreateEvent = () => {
 
   const showDatepicker = () => {
     showMode('date');
+  };
+
+  const createEvent = async currencyDate => {
+    const now = moment();
+    const momentDate = moment(currencyDate);
+    const daysDiff = momentDate.diff(now, 'days') + 1;
+    const reminderObj = {
+      id: events.length,
+      text: reminder,
+      date: date.toLocaleString(),
+    };
+    events.push(reminderObj);
+    try {
+      await AsyncStorage.setItem('@VillaAppsReminders', JSON.stringify(events));
+    } catch (e) {
+      alert(e);
+    }
+    Alert.alert(
+      'Lembrete Armazenado',
+      `Faltam ${daysDiff} dias para este evento!!!`,
+    );
   };
 
   return (
@@ -47,6 +83,14 @@ const CreateEvent = () => {
           onChange={onChange}
         />
       )}
+      <View style={styles.button_container}>
+        <Button
+          color="#5bd657"
+          onPress={() => createEvent(date)}
+          title="Salvar Lembrete"
+        />
+      </View>
+      <Text style={styles.showdate}>selected: {date.toLocaleString()}</Text>
     </View>
   );
 };
