@@ -32,9 +32,8 @@ const ShowEvents = () => {
   }, []);
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
     setShow(false);
-    SetEditingDate(currentDate);
+    setEditingDate(selectedDate);
   };
 
   const deleteEvent = async id => {
@@ -56,16 +55,22 @@ const ShowEvents = () => {
     setIdEditing(id);
   };
 
-  const saveEditing = id => {
+  const saveEditing = async id => {
     const newObj = {
       id,
       text: editingText,
       date: editingDate.toLocaleString(),
     };
-    alert(newObj.id);
-    alert(newObj.text);
-    alert(newObj.date);
+    events.splice(IdEditing, 1, 'newObj');
+    setEvents(events);
+    try {
+      await AsyncStorage.setItem('@VillaAppsReminders', JSON.stringify(events));
+    } catch (e) {
+      alert(e);
+    }
+    setEditing(false);
   };
+
   return (
     <ScrollView>
       <View style={styles.show_events_container}>
@@ -87,7 +92,7 @@ const ShowEvents = () => {
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
-                value={date}
+                value={editingDate}
                 mode="date"
                 is24Hour={true}
                 onChange={onChange}
