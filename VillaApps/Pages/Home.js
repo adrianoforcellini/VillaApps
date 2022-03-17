@@ -40,12 +40,15 @@ const styles = StyleSheet.create({
   create_event: {
     marginTop: '20%',
   },
+
   show_events: {
     marginTop: '20%',
   },
+
   logo: {
     marginTop: '20%',
   },
+
   home_container: {
     backgroundColor: 'black',
     height: '100%',

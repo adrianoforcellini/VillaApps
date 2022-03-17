@@ -14,9 +14,9 @@ import moment from 'moment';
 const ShowEvents = () => {
   const [show, setShow] = useState(false);
   const [events, setEvents] = useState([]);
-  const [editing, setEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState('');
-  const [IdEditing, setIdEditing] = useState('');
+  const [editingId, setEditingId] = useState('');
   const [editingDate, setEditingDate] = useState(new Date());
 
   useEffect(() => {
@@ -50,9 +50,9 @@ const ShowEvents = () => {
   };
 
   const editEvent = async (id, text) => {
-    setEditing(true);
+    setIsEditing(true);
     setEditingText(text);
-    setIdEditing(id);
+    setEditingId(id);
   };
 
   const saveEditing = async id => {
@@ -61,20 +61,27 @@ const ShowEvents = () => {
       text: editingText,
       date: editingDate.toLocaleString(),
     };
-    events.splice(IdEditing, 1, newObj);
+    events.splice(editingId, 1, newObj);
     setEvents(events);
     try {
       await AsyncStorage.setItem('@VillaAppsReminders', JSON.stringify(events));
     } catch (e) {
       alert(e);
     }
-    setEditing(false);
+    setIsEditing(false);
   };
-
+  const formateDate = d => {
+    const newDate = new Date(d).toLocaleDateString();
+    const arr = [];
+    arr.push(newDate.split('/')[1]);
+    arr.push(newDate.split('/')[0]);
+    arr.push(newDate.split('/')[2]);
+    return arr.join('/');
+  };
   return (
     <ScrollView>
       <View style={styles.show_events_container}>
-        {editing && (
+        {isEditing && (
           <View style={styles.create_event_container}>
             <TextInput
               numberOfLines={4}
@@ -101,7 +108,7 @@ const ShowEvents = () => {
             <View style={styles.button_container}>
               <Button
                 color="#5bd657"
-                onPress={() => saveEditing(IdEditing)}
+                onPress={() => saveEditing(editingId)}
                 title="Salvar Lembrete"
               />
             </View>
@@ -111,14 +118,16 @@ const ShowEvents = () => {
           events.map(event => (
             <View key={event.id} style={styles.event_card}>
               <Text style={styles.event_card_text}>{event.text}</Text>
-              <Text style={styles.event_card_text}>{event.date}</Text>
+              <Text style={styles.event_card_text}>
+                {formateDate(event.date)}
+              </Text>
               <Button
-                color="#5bd657"
+                // color="#5bd657"
                 onPress={() => editEvent(event.id, event.text)}
                 title="Editar Lembrete"
               />
               <Button
-                color="#5bd657"
+                // color="#5bd657"
                 onPress={() => deleteEvent(event.id)}
                 title="Apagar Lembrete"
               />
@@ -138,6 +147,7 @@ const styles = StyleSheet.create({
   event_card: {
     backgroundColor: 'whitesmoke',
     marginTop: '10%',
+    width: '80%',
   },
   event_card_text: {
     textAlign: 'center',

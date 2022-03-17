@@ -32,6 +32,7 @@ const CreateEvent = () => {
     const now = moment();
     const momentDate = moment(currencyDate);
     const daysDiff = momentDate.diff(now, 'days') + 1;
+
     const reminderObj = {
       id: events.length,
       text: reminder,
@@ -82,26 +83,24 @@ const CreateEvent = () => {
           title="Salvar Lembrete"
         />
       </View>
-      <Text style={styles.showdate}>selected: {date.toLocaleString()}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  showdate: {
-    color: 'white',
-  },
   input: {
     backgroundColor: 'white',
     width: '80%',
     marginTop: '20%',
     textAlign: 'center',
   },
+
   button_container: {
     marginTop: '20%',
   },
+
   create_event_container: {
-    backgroundColor: 'black',
+    backgroundColor: 'white',
     height: '100%',
     alignItems: 'center',
   },
