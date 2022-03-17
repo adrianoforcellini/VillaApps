@@ -61,7 +61,7 @@ const ShowEvents = () => {
       text: editingText,
       date: editingDate.toLocaleString(),
     };
-    events.splice(IdEditing, 1, 'newObj');
+    events.splice(IdEditing, 1, newObj);
     setEvents(events);
     try {
       await AsyncStorage.setItem('@VillaAppsReminders', JSON.stringify(events));
