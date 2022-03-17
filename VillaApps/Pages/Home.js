@@ -1,15 +1,18 @@
 import React from 'react';
 import {StyleSheet, Image, View, Button} from 'react-native';
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <View style={styles.home_container}>
       <Image source={require('../assets/logo.png')} style={styles.logo}></Image>
       <View style={styles.create_event}>
-        <Button title="Create Event" color="#5bd657"></Button>
+        <Button
+          title="Crie Um Lembrete"
+          color="#5bd657"
+          onPress={() => navigation.navigate('CreateEvent')}></Button>
       </View>
       <View style={styles.show_events}>
-        <Button title="Show Events" color="#5bd657"></Button>
+        <Button title=" Seus Lembretes " color="#5bd657"></Button>
       </View>
     </View>
   );
